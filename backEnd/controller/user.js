@@ -1,25 +1,28 @@
+const Joi = require('joi');
+
 var userService = require('../service/user');
 const User = require('../model/user');
-const bcrypt = require('bcryptjs')
-
 
 exports.create = function (req, res, next) {
     var body = new User(req.body);
-    if (!body.username) {
-        res.status(400).send('User name is missing');
+    const schema = Joi.object().keys({ 
+        username: Joi.string().min(3).required(),
+        firstName: Joi.string().required(), 
+        lastName: Joi.string().required(),
+        address: Joi.string().required(),
+        phone: Joi.string().required(),
+        role: Joi.string().min(3).required(),
+        password: Joi.string().min(3).required() 
+      }); 
+      const result = Joi.validate(req.body, schema); 
+      // console.log(result)
+    if (result.error) {
+        res.status(400).send(result.error.details[0].message);
         return;
     }
     userService.createUser(body, function (error, response) {
         if (response) {
-            bcrypt.genSalt(10, (err, salt)=> {
-                bcrypt.hash(req.body.password, salt, (err, hash)=> {
-                    if(err) throw err;
-                    req.body.password = hash;
-                    response.password = hash;
-                    console.log(response.password)
-                    res.status(201).send(response);
-                })
-            })
+            res.status(201).send(response);
            
         } else if (error) {
             res.status(400).send(error);
