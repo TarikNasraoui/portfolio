@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
 });
 
 
-router.post('/', user.create);
+router.post('/create', user.create);
 
 
 router.get('/user/:username', user.find);

@@ -1,5 +1,6 @@
 var userService = require('../service/user');
 const User = require('../model/user');
+const bcrypt = require('bcryptjs')
 
 
 exports.create = function (req, res, next) {
@@ -10,7 +11,16 @@ exports.create = function (req, res, next) {
     }
     userService.createUser(body, function (error, response) {
         if (response) {
-            res.status(201).send(response);
+            bcrypt.genSalt(10, (err, salt)=> {
+                bcrypt.hash(req.body.password, salt, (err, hash)=> {
+                    if(err) throw err;
+                    req.body.password = hash;
+                    response.password = hash;
+                    console.log(response.password)
+                    res.status(201).send(response);
+                })
+            })
+           
         } else if (error) {
             res.status(400).send(error);
         }

@@ -15,10 +15,10 @@ var schema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    dob: Date,
     address: String,
     phone: String,
-    role: String
+    role: String,
+    password: String
 });
 
 var User = new mongoose.model('User', schema);
