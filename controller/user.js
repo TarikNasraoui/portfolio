@@ -1,4 +1,7 @@
 const Joi = require('joi');
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+
 
 var userService = require('../service/user');
 const User = require('../model/user');
@@ -30,7 +33,6 @@ exports.create = function (req, res, next) {
     });
 }
 
-
 exports.find = function (req, res) {
     var params = req.params || {};
     var query = {
@@ -54,7 +56,47 @@ exports.find = function (req, res) {
         }
     });
 }
+exports.login = function(req, res){
+    var username = req.body.username;
+    var password = req.body.password;
 
+    userService.findUser({username}, function(error, response) {
+        if (error) {
+            res.status(404).send(error);
+            return;
+        }
+        if (response) {
+            console.log(password, response.password)
+            bcrypt.compare(password, response.password)
+            .then(isMatch => {
+                if(isMatch){
+
+                    const payload = {lastName: response.lastName, firstName: response.firstName} // Create JWT avatar // Create JWT avatar
+                    // Sign Token
+                    jwt.sign(payload,'secret',
+                         {expiresIn : 86400},
+                         (err, token) => {
+                            res.status(200).json({
+                            success : true,
+                            username: response.username,
+                            token: 'Bearer ' + token
+                        })
+                    })
+                    console.log(isMatch)
+                    // res.status(200).send(response);
+                    // return;
+                }else{
+                    res.status(404).send('No password match Found');
+                    return;
+                }
+            })
+           
+        }
+        if (!response) {
+            res.status(404).send('No user name Found');
+        }
+    })
+}
 exports.updateById = function (req, res) {
     var body = req.body;
 

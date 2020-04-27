@@ -9,6 +9,8 @@ router.get('/', function (req, res, next) {
 
 router.post('/create', user.create);
 
+router.post('/login', user.login);
+
 
 router.get('/user/:username', user.find);
 
