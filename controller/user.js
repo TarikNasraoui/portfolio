@@ -12,8 +12,8 @@ exports.create = function (req, res, next) {
         address: Joi.string().required(),
         phone: Joi.string().required(),
         role: Joi.string().min(3).required(),
-        password: Joi.string().min(3).required() 
-      }); 
+        password: Joi.required() 
+    }); 
       const result = Joi.validate(req.body, schema); 
       // console.log(result)
     if (result.error) {
