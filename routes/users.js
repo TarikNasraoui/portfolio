@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var user = require('../controller/user');
+const jwt = require('jsonwebtoken')
+const passport = require('passport')
+
 
 router.get('/', function (req, res, next) {
   res.send('respond with a resource');
@@ -10,6 +13,17 @@ router.get('/', function (req, res, next) {
 router.post('/create', user.create);
 
 router.post('/login', user.login);
+
+
+router.get('/current', passport.authenticate('jwt', {session : false}), user.current);
+// router.get('/current', passport.authenticate('jwt', {session : false}),
+//  (req, res)=>{
+//      console.log(req.user.username)
+//     res.json({
+//         name: req.user.username,
+//         email: req.user.email
+//     })
+// })
 
 
 router.get('/user/:username', user.find);

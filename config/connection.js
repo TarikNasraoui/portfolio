@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
-
+// URL data base
+const dbUrl = require('./keys').mongoURI;
 // We need to difine the URL
-var URL = process.env.URL || 'mongodb+srv://tarik:database1234567890@database01-w73ry.mongodb.net/test?retryWrites=true&w=majority';
+var URL = process.env.URL || dbUrl;
 
 mongoose.set('useCreateIndex', true);
 
@@ -26,3 +27,7 @@ db.on('error', () => {
 db.on('open', () => {
     console.log('DB Connection established successfully');
 });
+
+module.exports = {
+    secretOrKey : 'secret'
+}

@@ -1,8 +1,11 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+const bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+const passport = require('passport')
 
 const http = require('http');
 //Models
@@ -21,8 +24,8 @@ var app = express();
 
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(cookieParser());
 
 
@@ -30,6 +33,11 @@ app.use('/', indexRouter);
 app.use('/api/v1/users', usersRouter);
 
 
+// Passport MiddleWare
+app.use(passport.initialize())
+
+// Passport Config
+require('./config/passport')(passport)
 
 // error handler
 app.use(function(err, req, res, next) {

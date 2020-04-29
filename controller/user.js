@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 
 var userService = require('../service/user');
 const User = require('../model/user');
+const keys = require('../config/keys')
+
 
 exports.create = function (req, res, next) {
     var body = new User(req.body);
@@ -71,9 +73,9 @@ exports.login = function(req, res){
             .then(isMatch => {
                 if(isMatch){
 
-                    const payload = {lastName: response.lastName, firstName: response.firstName} // Create JWT avatar // Create JWT avatar
+                    const payload = {id: response.id, lastName: response.lastName, firstName: response.firstName} // Create JWT avatar // Create JWT avatar
                     // Sign Token
-                    jwt.sign(payload,'secret',
+                    jwt.sign(payload,keys.secretOrKey,
                          {expiresIn : 86400},
                          (err, token) => {
                             res.status(200).json({
@@ -159,15 +161,10 @@ exports.delete = function (req, res) {
     });
 }
 
-
-// class User {
-//     constructor(userData) {
-//         this.username = userData.username || '';
-//         this.firstName = userData.firstName || '';
-//         this.lastName = userData.lastName || '';
-//         this.dob = userData.dob || '';
-//         this.address = userData.address || '';
-//         this.phone = userData.phone || '';
-//         this.role = userData.role || '';
-//     }
-// }
+exports.current = (req,res)=>{
+    res.json({
+        username: req.user.username,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName
+    })
+}
