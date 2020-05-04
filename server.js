@@ -10,10 +10,12 @@ const passport = require('passport')
 const http = require('http');
 //Models
 require('./model/user');
+require('./model/profile');
 
 //Routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var profileRouter = require('./routes/profile');
 
 //Configs
 require('./config/connection');
@@ -31,6 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
 app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/profile', profileRouter);
 
 
 // Passport MiddleWare
