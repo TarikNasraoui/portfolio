@@ -1,19 +1,18 @@
 <template>
-  <div id="app">
-    <Index />
-  </div>
+  <v-app>
+    <v-content>
+      <router-view/>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import Index from './frontOffice/Index'
 
 export default {
   name: 'App',
-  components: {
-    Index
-  }
-}
-</script>
 
-<style>
-</style>
+  data: () => ({
+    //
+  }),
+};
+</script>
