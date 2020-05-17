@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Index from './frontOffice/Index.vue'
 import Admin from './backOffice/Admin.vue'
 import AddProfile from './backOffice/Views/AddProfile.vue'
+import Login from './backOffice/Views/Login.vue'
 import Projects from './backOffice/Projects.vue'
 // import Team from './backOffice/Team.vue'
 // import Aside from './frontOffice/Aside'
@@ -19,6 +20,11 @@ export default new Router({
         component: Index
       },
       {
+        path: '/login',
+        name: 'login',
+        component: Login
+      },
+      {
         path: '/admin',
         name: 'admin',
         component: Admin,
@@ -32,7 +38,8 @@ export default new Router({
            
             path: '/admin/new-profile',
             component: AddProfile
-          }
+          },
+          
         ]
       },
       // {

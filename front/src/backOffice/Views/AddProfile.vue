@@ -1,5 +1,4 @@
 <template>
-  <v-app id="inspire">
     <v-form
       ref="form"
       v-model="valid"
@@ -59,7 +58,6 @@
         Reset Validation
       </v-btn>
     </v-form>
-  </v-app>
 </template>
 <script>
 export default {
