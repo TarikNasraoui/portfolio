@@ -88,7 +88,7 @@ exports.login = function(req, res){
                     // res.status(200).send(response);
                     // return;
                 }else{
-                    res.status(404).send('No password match Found');
+                    res.status(404).json({'error': 'No password match Found'});
                     return;
                 }
             })
