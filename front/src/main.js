@@ -4,13 +4,19 @@ import VueRouter from 'vue-router'
 import router from './router'
 import vuetify from './plugins/vuetify';
 import store from './store'
-import axios from 'axios'
+import Axios from 'axios'
 
 Vue.use(VueRouter)
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = "/"
+Vue.prototype.$http = Axios;
+const token = localStorage.getItem('token')
+if (token) {
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+}
+
+// axios.defaults.baseURL = "/"
 
 new Vue({
   router,

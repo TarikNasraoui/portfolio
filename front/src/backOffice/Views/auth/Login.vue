@@ -84,6 +84,7 @@
               {{todo.title}}
             </p>
           </div> -->
+          <!-- {{ log(plan) }} -->
         <v-row>
         </v-row>
       </v-container>
@@ -92,21 +93,29 @@
 <script>
   import {mapGetters, mapActions} from 'vuex'
     export default {
-        name: 'Login',
-        computed: mapGetters(['allTodos']),
-        data: () => ({
-            valid: true,
-            username: '',
-            usernameRules: [
-                v => !!v || 'Name is required',
-            ],
-            password: '',
-            passwordRules: [
-                v => !!v || 'Name is required',
-            ],
-            error: false
+      
+        name: 'login',
+        // computed: mapGetters(['allTodos']),
+        computed: mapGetters(['isLoggedIn','authStatus','user']),
+        data: () => {
+            return {
+                valid: true,
+                // username: this.$route.params.username == undefined ? '' : this.$route.params.username,
+                username:  '' ,
 
-        }),
+                usernameRules: [
+                    v => !!v || 'Name is required',
+                ],
+                // password:  this.$route.params.username == undefined ? '' : this.$route.params.password,
+                password:  '',
+                passwordRules: [
+                    v => !!v || 'Name is required',
+                ],
+                error: false
+
+            }
+        }
+        ,
 
         methods: {
             ...mapActions(["fetchTodos"]),
@@ -132,10 +141,17 @@
                 console.log(error.response.data)
                 this.error = true
               })
+            },
+             log(msg){
+              console.log(msg); 
             }
         },
         created() {
           this.fetchTodos()
+          this.username = this.$route.params.username == undefined ? '' : this.$route.params.username;
+          this.password =  this.$route.params.username == undefined ? '' : this.$route.params.password;
+        },
+        mounted() {
         },
         
     }

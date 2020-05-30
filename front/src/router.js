@@ -3,21 +3,23 @@ import Router from 'vue-router'
 import Index from './frontOffice/Index.vue'
 import Admin from './backOffice/Admin.vue'
 import AddProfile from './backOffice/Views/AddProfile.vue'
-import Login from './backOffice/Views/Login.vue'
+import Login from './backOffice/Views/auth/Login.vue'
+import Register from './backOffice/Views/auth/Register.vue'
 import Projects from './backOffice/Projects.vue'
+import store from './store'
 // import Team from './backOffice/Team.vue'
 // import Aside from './frontOffice/Aside'
 
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
     mode: 'history',
     routes: [
       {
         path: '/',
         name: 'index',
-        component: Index
+        component: Index,
       },
       {
         path: '/login',
@@ -25,45 +27,48 @@ export default new Router({
         component: Login
       },
       {
+        path: '/register',
+        name: 'register',
+        component: Register
+      },
+      {
         path: '/admin',
         name: 'admin',
         component: Admin,
+        meta: { 
+          requiresAuth: true
+        },
         children: [
           {
            
             path: '/admin/projects',
-            component: Projects
+            component: Projects,
+            meta: { 
+              requiresAuth: true
+            }
           },
           {
            
             path: '/admin/new-profile',
-            component: AddProfile
+            component: AddProfile,
+            meta: { 
+              requiresAuth: true
+            }
           },
           
         ]
       },
-      // {
-      //   path: '/dashboard',
-      //   name: 'Dashboard',
-      //   component: Dashboard
-      // },
-      // {
-      //   path: '/project',
-      //   name: 'Projects',
-      //   component: Projects
-      // },
-      // {
-      //   path: '/Team',
-      //   name: 'Team',
-      //   component: Team
-      // },
-    //   {
-    //     path: '/about',
-    //     name: 'about',
-    //     // route level code-splitting
-    //     // this generates a separate chunk (about.[hash].js) for this route
-    //     // which is lazy-loaded when the route is visited.
-    //     component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    //   }
     ]
   })
+  router.beforeEach((to, from, next) => {
+    if(to.matched.some(record => record.meta.requiresAuth)) {
+      if (store.getters.isLoggedIn) {
+        next()
+        return
+      }
+      next('/login') 
+    } else {
+      next() 
+    }
+  })
+  export default router

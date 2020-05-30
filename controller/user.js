@@ -80,7 +80,11 @@ exports.login = function(req, res){
                          (err, token) => {
                             res.status(200).json({
                             success : true,
-                            username: response.username,
+                            user:{
+                                username: response.username,
+                                lastName: response.lastName,
+                                firstName: response.firstName
+                            } ,
                             token: 'Bearer ' + token
                         })
                     })
