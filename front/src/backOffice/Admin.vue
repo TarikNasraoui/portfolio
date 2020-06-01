@@ -1,13 +1,15 @@
 <template>
     <div>
         <Navbar />
-        <v-content class="ma-4">
+        <v-content>
             <router-view></router-view>
         </v-content>
         <Footer />
     </div>
     
 </template>
+
+
 
 <script>
  import Navbar from './components/Navbar'
@@ -20,3 +22,10 @@ export default {
     }
 }
 </script>
+
+<style>
+ .v-content {
+    padding-left: 140px !important;
+    padding-right: 15px !important;
+  }
+</style>
