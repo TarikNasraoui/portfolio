@@ -68,7 +68,6 @@ exports.login = function(req, res){
             return;
         }
         if (response) {
-            console.log(password, response.password)
             bcrypt.compare(password, response.password)
             .then(isMatch => {
                 if(isMatch){

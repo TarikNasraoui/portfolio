@@ -1,12 +1,19 @@
 (function () {
     const bcrypt = require('bcryptjs')
     var mongoose = require('mongoose');
-    var user = mongoose.model('User');
+    // var user = mongoose.model('User');
     var profile = mongoose.model('Profile');
 
     exports.findProfile = function(query, callback) {
-        console.log(query)
         profile.findOne(query, callback)
+        .populate('user',['username','firstName'])
+
+    }
+
+    exports.findAll = function(query, callback) {
+        profile.find(null,callback)
+        // .populate('user',['username','firstName'])
+
     }
 
     exports.createProfile = function (data, callback) {
@@ -24,5 +31,6 @@
             callback(error, null);
         });
     }
+
 
 })()
